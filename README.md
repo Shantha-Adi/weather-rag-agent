@@ -1,37 +1,36 @@
-🌤️ Weather & Style Agent
+# 🌤️ Weather & Style Agent
 
-An intelligent LangGraph agent that routes user queries between real-time weather data and expert fashion advice using RAG (Retrieval Augmented Generation).
+> An intelligent LangGraph agent that routes user queries between real-time weather data and expert fashion advice using RAG (Retrieval Augmented Generation).
 
-📖 Overview
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![LangGraph](https://img.shields.io/badge/LangGraph-Agentic-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-red)
+![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-green)
 
-This project implements a conditional routing agent. Instead of using a generic LLM for everything, it intelligently decides whether a user needs:
+## 📖 Overview
 
-Real-Time Data: Fetches live weather from the OpenWeatherMap API.
+This project implements a **conditional routing agent**, it intelligently decides whether a user needs:
+1.  **Real-Time Data:** Fetches live weather from the OpenWeatherMap API.
+2.  **Expert Knowledge:** Retrieves fashion/fabric advice from a local Qdrant vector store (RAG).
 
-Expert Knowledge: Retrieves fashion/fabric advice from a local Qdrant vector store (RAG).
+It uses **LangGraph** to manage the state and workflow, **AWS Bedrock** for LLM/Embeddings, and **Streamlit** for the chat interface.
 
-It uses LangGraph to manage the state and workflow, AWS Bedrock for LLM/Embeddings, and Streamlit for the chat interface.
-
-🏗️ Architecture
+## 🏗️ Architecture
 
 The agent follows a Router-Tool pattern:
 
-Classifier Node: Analyzes user intent and extracts entities (City vs. Search Query).
+1.  **Classifier Node:** Analyzes user intent and extracts entities (City vs. Search Query).
+2.  **Conditional Edge:** Routes the flow to either `weather_node` or `rag_node`.
+3.  **Tool Nodes:** Execute the specific API call or Vector Search.
+4.  **Answer Node:** Synthesizes the retrieved context into a final natural language response.
 
-Conditional Edge: Routes the flow to either weather_node or rag_node.
+## 📂 Project Structure
 
-Tool Nodes: Execute the specific API call or Vector Search.
-
-Answer Node: Synthesizes the retrieved context into a final natural language response.
-
-📂 Project Structure
-
+```text
 weather-rag-agent/
-├── .env                    # API Keys (Not included in repo)
+├── .env                    # API Keys 
 ├── app.py                  # Streamlit User Interface
 ├── evaluate.py             # LangSmith Evaluation Script
-├── main.py                 # CLI Entry Point
-├── pytest.ini              # Testing Configuration
 ├── requirements.txt        # Dependencies
 ├── data/                   # Assets (PDFs and Test JSONs)
 │   ├── clothing_documents/ # Place PDFs here
@@ -41,47 +40,56 @@ weather-rag-agent/
 │   ├── graph.py            # LangGraph Workflow Definition
 │   ├── ingest.py           # PDF Ingestion Script
 │   ├── state.py            # Pydantic Models & State TypedDict
-│   └── tools.py            # External Tool Logic (API & DB)
+│   └── tools.py            # OpenWeatherAPI and RAG tools
 └── tests/
     ├── conftest.py         # Pytest Fixtures
     ├── test_graph.py       # Graph Logic Tests
     └── test_tools.py       # Tool Unit Tests
+```
+## 🧭 Architecture Diagram
+
+![Architecture Diagram](graph.png)
 
 
-🚀 Installation
+# 🚀 Installation
 
-Clone the repository:
+### **Clone the repository**
 
-git clone [https://github.com/your-username/weather-rag-agent.git](https://github.com/your-username/weather-rag-agent.git)
+``` bash
+git clone https://github.com/your-username/weather-rag-agent.git
 cd weather-rag-agent
+```
 
+### **Create a virtual environment**
 
-Create a virtual environment:
-
+``` bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate     # On Windows: venv\Scripts\activate
+```
 
+### **Install dependencies**
 
-Install dependencies:
-
+``` bash
 pip install -r requirements.txt
+```
 
+### **Configure Environment Variables**
 
-Configure Environment Variables:
-Create a .env file in the root directory. You can copy the structure below:
+Create a **.env** file in the project root:
 
+``` ini
 # .env file
 
 # 1. Weather API (Required)
 OPENWEATHER_API_KEY="your_openweather_key"
-OPENWEATHER_BASE_URL="[https://api.openweathermap.org/data/2.5/weather](https://api.openweathermap.org/data/2.5/weather)"
+OPENWEATHER_BASE_URL="https://api.openweathermap.org/data/2.5/weather"
 
 # 2. AWS Bedrock Credentials (Required)
 AWS_ACCESS_KEY_ID="your_aws_key"
 AWS_SECRET_ACCESS_KEY="your_aws_secret"
 REGION_NAME="us-east-1"
 
-# 3. Model IDs (Optional - defaults provided in src/config.py)
+# 3. Model IDs (Defaults provided in config.py)
 ROUTER_MODEL_ID="us.amazon.nova-lite-v1:0"
 ANSWER_MODEL_ID="us.amazon.nova-pro-v1:0"
 EMBEDDING_MODEL_ID="amazon.titan-embed-text-v2:0"
@@ -89,65 +97,65 @@ EMBEDDING_MODEL_ID="amazon.titan-embed-text-v2:0"
 # 4. LangSmith Evaluation (Optional)
 LANGCHAIN_API_KEY="your_langsmith_key"
 LANGCHAIN_TRACING_V2=true
+```
 
+# 💻 Usage
 
-💻 Usage
+### **1. Ingest Knowledge (RAG)**
 
-1. Ingest Knowledge (RAG)
+Populate the vector database with your fashion PDFs.
 
-Before asking about fashion, you need to populate the vector database. Place your PDF guides inside data/clothing_documents/.
-
+``` bash
 python src/ingest.py
+```
 
+### **2. Run the Web App**
 
-2. Run the Web App
+Launch the Streamlit interface.
 
-Launch the Streamlit interface to chat with the agent visually.
-
+``` bash
 streamlit run app.py
+```
 
+# 🧪 Testing & Evaluation
 
-3. Run via CLI
+## **Unit Tests**
 
-For quick testing in the terminal without a UI:
+Current Test Status: 100% Passing
 
-python main.py
+    tests/test_graph.py::test_intent_classifier_weather PASSED      [ 11%]
+    tests/test_graph.py::test_decide_next_node PASSED              [ 22%]
+    tests/test_graph.py::test_weather_node_integration PASSED      [ 33%]
+    tests/test_graph.py::test_rag_node_integration PASSED          [ 44%]
+    tests/test_tools.py::test_fetch_weather_success PASSED         [ 55%]
+    tests/test_tools.py::test_fetch_weather_city_not_found PASSED  [ 66%]
+    tests/test_tools.py::test_fetch_weather_no_input PASSED        [ 77%]
+    tests/test_tools.py::test_query_qdrant_success PASSED          [ 88%]
+    tests/test_tools.py::test_query_qdrant_empty PASSED            [100%]
 
+    ======================= 9 passed in 2.60s =======================
 
-🧪 Testing & Evaluation
+### **Run tests locally**
 
-This project uses a hybrid testing strategy to ensure reliability.
-
-Unit Tests (Logic Stability)
-
-We use pytest with mocks to test the logic without hitting real APIs. This is fast and free.
-
+``` bash
 python -m pytest -v
+```
 
+## **LLM Evaluation using LangSmith**
 
-Evaluation (LLM Intelligence)
-
-We use LangSmith to evaluate if the Router is making smart decisions and if the answers are faithful to the context. This uses the dataset in data/evaluation_dataset.json.
-
+``` bash
 python evaluate.py
+```
 
+# 🛠️ Tech Stack
 
-🛠️ Tech Stack
+-   **Orchestration:** LangGraph\
+-   **LLMs:** AWS Bedrock (Nova Lite, Nova Pro)\
+-   **Vector Database:** Qdrant (Local)\
+-   **External API:** OpenWeatherMap\
+-   **Testing:** Pytest, Unittest.mock\
+-   **Evaluation:** LangSmith SDK
 
-Orchestration: LangGraph
+# 📝 License
 
-LLMs: AWS Bedrock (Nova Lite for Routing, Nova Pro for Answering)
-
-Embeddings: Amazon Titan V2
-
-Vector Database: Qdrant (Local)
-
-External API: OpenWeatherMap
-
-Testing: Pytest, Unittest.mock
-
-Evaluation: LangSmith SDK
-
-📝 License
-
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
