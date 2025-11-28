@@ -7,6 +7,12 @@ st.set_page_config(page_title="Weather & Style Agent", page_icon="🌤️")
 st.title("🌤️ Weather & Style Agent")
 st.markdown("Ask me about the weather or what to wear!")
 
+st.error(f"DEBUG INFO:")
+st.write(f"1. Current Working Directory: {os.getcwd()}")
+st.write(f"2. Config File Location: {config.__file__}")
+st.write(f"3. Calculated QDRANT_PATH: {config.QDRANT_PATH}")
+st.write(f"4. Does QDRANT_PATH exist?: {os.path.exists(config.QDRANT_PATH)}")
+
 # --- CSS FOR CHAT  ---
 st.markdown("""
 <style>
