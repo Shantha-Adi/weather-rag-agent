@@ -1,0 +1,42 @@
+[
+  {
+    "inputs": { "question": "What is the current temperature in New York?" },
+    "outputs": { "expected_intent": "weather", "expected_city": "New York" }
+  },
+  {
+    "inputs": { "question": "Is it going to rain in London today?" },
+    "outputs": { "expected_intent": "weather", "expected_city": "London" }
+  },
+  {
+    "inputs": { "question": "Check weather forecast for Mumbai." },
+    "outputs": { "expected_intent": "weather", "expected_city": "Mumbai" }
+  },
+  {
+    "inputs": { "question": "How cold is it in Toronto right now?" },
+    "outputs": { "expected_intent": "weather", "expected_city": "Toronto" }
+  },
+  {
+    "inputs": { "question": "Dubai weather report please." },
+    "outputs": { "expected_intent": "weather", "expected_city": "Dubai" }
+  },
+  {
+    "inputs": { "question": "What kind of fabric is best for high humidity?" },
+    "outputs": { "expected_intent": "rag", "expected_query": "fabric for high humidity" }
+  },
+  {
+    "inputs": { "question": "How should I layer my clothes for freezing temperatures?" },
+    "outputs": { "expected_intent": "rag", "expected_query": "layering clothes freezing cold" }
+  },
+  {
+    "inputs": { "question": "Is it okay to wear linen to a formal winter wedding?" },
+    "outputs": { "expected_intent": "rag", "expected_query": "linen fabric winter formal wear" }
+  },
+  {
+    "inputs": { "question": "Suggest a color palette for autumn skin tones." },
+    "outputs": { "expected_intent": "rag", "expected_query": "color palette autumn skin tone" }
+  },
+  {
+    "inputs": { "question": "What are the rules for wearing white after Labor Day?" },
+    "outputs": { "expected_intent": "rag", "expected_query": "wearing white after labor day rules" }
+  }
+]

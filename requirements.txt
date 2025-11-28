@@ -1,0 +1,15 @@
+langchain
+langchain-aws
+langchain-community
+langchain-qdrant
+langgraph
+qdrant-client
+pydantic
+python-dotenv
+requests
+boto3
+streamlit
+pytest
+pytest-mock
+pypdf
+langchain-text-splitters
