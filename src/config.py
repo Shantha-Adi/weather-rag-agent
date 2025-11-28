@@ -7,7 +7,7 @@ load_dotenv()
 OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 # Qdrant Config
-QDRANT_PATH = "/clothing-v10"
+QDRANT_PATH = "clothing-v10"
 COLLECTION_NAME = "clothing-v10"
 
 # AWS Bedrock Config
