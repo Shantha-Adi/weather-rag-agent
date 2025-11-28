@@ -1,6 +1,7 @@
 import streamlit as st
 from src.graph import build_graph
 from langchain_core.messages import HumanMessage, AIMessage
+import os
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="Weather & Style Agent", page_icon="🌤️")
